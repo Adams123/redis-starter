@@ -1,0 +1,30 @@
+spring:
+  cache:
+    type: redis
+  redis:
+    port: 7000
+    host: localhost
+  jpa:
+    generate-ddl: true
+    database: POSTGRESQL
+    open-in-view: true
+    properties:
+      hibernate:
+        format_sql: true
+        ddl-auto: update
+        show-sql: true
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
+    initialization-mode: always
+  hikari:
+    connectionTimeout: 5000
+    maximumPoolSize: 3
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
