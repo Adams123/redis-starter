@@ -1,10 +1,9 @@
-package com.adams.redisstarter.repository
+package repository
 
-import com.adams.redisstarter.data.User
+import data.Customer
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 import java.util.*
 
 @Repository
-interface UserRepository : JpaRepository<User, UUID> {
-}
+interface CustomerRepository : JpaRepository<Customer, UUID>

@@ -1,22 +1,21 @@
 package com.adams.redisstarter.web
 
-import com.adams.redisstarter.Utils.Companion.log
-import com.adams.redisstarter.data.User
-import com.adams.redisstarter.repository.UserRepository
+import Utils.Companion.log
+import data.User
 import io.github.benas.randombeans.EnhancedRandomBuilder
 import org.springframework.cache.annotation.CacheEvict
 import org.springframework.cache.annotation.CachePut
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.cache.annotation.Caching
-import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.web.bind.annotation.*
+import repository.UserRepository
 import java.util.*
 import javax.persistence.EntityNotFoundException
 
-@RestController("/users")
+@RestController
+@RequestMapping("/users")
 class UserController(
-    private val userRepository: UserRepository,
-    private val redisTemplate: RedisTemplate<UUID, User> = RedisTemplate()
+    private val userRepository: UserRepository
 ) {
 
     @Cacheable(value = ["usersList"])
@@ -39,11 +38,9 @@ class UserController(
     @PostMapping
     fun createUser() = EnhancedRandomBuilder.aNewEnhancedRandomBuilder().build().nextObject(User::class.java, "id").let {
         userRepository.save(it)
-    }.also {
-        redisTemplate.persist(it.id!!)
     }
 
-    @CacheEvict(value = ["userSearch", "user"])
+    @CacheEvict(value = ["usersList", "user"])
     @DeleteMapping
     fun deleteCache() = run {
         log.info { "Deleting caches" }

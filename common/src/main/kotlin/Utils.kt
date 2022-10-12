@@ -1,5 +1,3 @@
-package com.adams.redisstarter
-
 import mu.KotlinLogging
 
 class Utils {

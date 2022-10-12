@@ -1,15 +1,16 @@
 package com.adams.redisstarter
 
+import config.CommonConfig
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.cache.annotation.EnableCaching
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories
+import org.springframework.context.annotation.Import
 
 @SpringBootApplication
-@EnableJpaRepositories
+@Import(CommonConfig::class)
 @EnableCaching
-class RedisStarterApplication
+class CustomerApplication
 
 fun main(args: Array<String>) {
-	runApplication<RedisStarterApplication>(*args)
+	runApplication<CustomerApplication>(*args)
 }
