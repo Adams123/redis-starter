@@ -39,6 +39,8 @@ dependencies {
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+	implementation("com.newrelic.agent.java:newrelic-api:4.7.0")
 }
 
 tasks.withType<KotlinCompile> {

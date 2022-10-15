@@ -1,6 +1,7 @@
 package com.adams.redisstarter.web
 
 import Utils.Companion.log
+import com.newrelic.api.agent.Trace
 import data.Customer
 import io.github.benas.randombeans.EnhancedRandomBuilder
 import org.springframework.cache.annotation.CacheEvict
@@ -20,6 +21,7 @@ class CustomerController(
 
     @Cacheable(value = ["customerList"])
     @GetMapping
+    @Trace
     fun findAllUsers(): MutableList<Customer> {
         log.info("Calling findAll")
         return customerRepository.findAll()
@@ -27,6 +29,7 @@ class CustomerController(
 
     @Cacheable(value = ["customer"], key = "#id")
     @GetMapping("/{id}")
+    @Trace
     fun findById(
         @PathVariable id: UUID
     ): Customer {
@@ -36,12 +39,14 @@ class CustomerController(
 
     @Caching(evict = [CacheEvict(value = ["customerList"], allEntries = true)], put = [CachePut(value = ["customer"])])
     @PostMapping
+    @Trace
     fun createUser() = EnhancedRandomBuilder.aNewEnhancedRandomBuilder().build().nextObject(Customer::class.java, "id").let {
         customerRepository.save(it)
     }
 
     @CacheEvict(value = ["customerList", "customer"])
     @DeleteMapping
+    @Trace
     fun deleteCache() = run {
         log.info { "Deleting caches" }
     }
@@ -49,6 +54,7 @@ class CustomerController(
     // Check if clearing cache from this service reflects on cache on other service (should not call find all on UserController)
     @CacheEvict(value = ["usersList", "user"])
     @DeleteMapping("/users")
+    @Trace
     fun deleteUsers() = run {
         log.info { "Deleting users" }
     }
